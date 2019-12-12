@@ -14,8 +14,11 @@ module.exports = (path, middleware, options = {}) => {
 
   const layer = new Layer(path, layerOpts, noOp)
 
-  return (req, res, next) => {
-    if (layer.match(req.path)) return next()
-    middleware(req, res, next)
+  if (!Array.isArray(middleware)) {
+    middleware = [ middleware ]
   }
+  return middleware.map(_middleware => (req, res, next) => {
+    if (layer.match(req.path)) return next()
+    _middleware(req, res, next)
+  })
 }

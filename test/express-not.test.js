@@ -7,7 +7,8 @@ test.before(async () => {
   const app = express()
 
   const router = new Router()
-  router.use((req, res) => res.send('stopped'))
+  const middleware = (req, res) => res.send('stopped')
+  router.use(middleware)
 
   app.use('/use',
     not(['/skip'], router),
@@ -26,6 +27,16 @@ test.before(async () => {
 
   app.all('/all-end/*',
     not(['/all-end/skip'], router, { end: true }),
+    (req, res) => res.send('skipped')
+  )
+
+  app.use('/array',
+    not(['/skip'], [ (req, res, next) => next(), router ]),
+    (req, res) => res.send('skipped')
+  )
+
+  app.use('/anonymous',
+    not(['/skip'], middleware),
     (req, res) => res.send('skipped')
   )
 
@@ -54,4 +65,16 @@ test('all with end', async (t) => {
   t.is((await got('http://localhost:3030/all-end/other')).body, 'stopped')
   t.is((await got('http://localhost:3030/all-end/skip')).body, 'skipped')
   t.is((await got('http://localhost:3030/all-end/skip/more')).body, 'stopped')
+})
+
+test('array', async (t) => {
+  t.is((await got('http://localhost:3030/array/other')).body, 'stopped')
+  t.is((await got('http://localhost:3030/array/skip')).body, 'skipped')
+  t.is((await got('http://localhost:3030/array/skip/more')).body, 'skipped')
+})
+
+test('anonymous', async (t) => {
+  t.is((await got('http://localhost:3030/anonymous/other')).body, 'stopped')
+  t.is((await got('http://localhost:3030/anonymous/skip')).body, 'skipped')
+  t.is((await got('http://localhost:3030/anonymous/skip/more')).body, 'skipped')
 })
