@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.0] - 2019-12-12
+
+- Added support for middleware spread
+- Moved options before middleware spread
+
 ## [1.1.0] - 2019-12-11
 
 - Added support for `.all`-style route matching

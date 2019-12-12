@@ -18,9 +18,8 @@ app.use('/mount',
 ```
 
 ## Documentation
-`not(path, middleware, [options])`:
+`not(path, [options], ...middleware)`:
 * `path`: An Express path that should be skipped over. If the path of the request matches, the passed `middleware` will be skipped. Supports any of [Express Path Examples](https://expressjs.com/en/api.html#path-examples).
-* `middleware`: An Express callback or router, or an array of callbacks and/or routers
 * `options`:
   * `caseSensitive`: Enable case sensitivity when matching the route ([express.Router docs](https://expressjs.com/en/api.html#express.router)),
   _default `false`_
@@ -28,6 +27,7 @@ app.use('/mount',
   _default `false`_
   * `end`: Match the route completely (like `.all`) instead of just the prefix (like `.use`),
   _default `false`_
+* `middleware`: An Express callback or router, an array of callbacks and/or routers, or a mix of these
 
 ## License
 MIT
