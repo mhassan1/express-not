@@ -1,28 +1,21 @@
 
-const { Router } = require('express')
+const Layer = require('express/lib/router/layer')
 
-const FLAG = '__skipByExpressNot'
-const clearFlag = (req) => { delete req[FLAG] }
+module.exports = (path, middleware, options = {}) => {
+  const layerOpts = {
+    sensitive: 'caseSensitive' in options ? options.caseSensitive : false,
+    strict: 'strict' in options ? options.strict : false,
+    // set this so that the match acts like `.all` rather than `.use`
+    // e.g. '/a' should match '/a' and not '/a/b'
+    end: 'end' in options ? options.end : false,
+  }
 
-module.exports = function(path, middleware) {
-  const router = new Router()
+  const noOp = () => {}
 
-  router.use((req, res, next) => {
-    clearFlag(req)
-    next()
-  })
+  const layer = new Layer(path, layerOpts, noOp)
 
-  router.use(path, (req, res, next) => {
-    req[FLAG] = true
-    next()
-  })
-
-  router.use((req, res, next) => {
-    const flagSet = req[FLAG]
-    clearFlag(req)
-    if (flagSet) return next()
+  return (req, res, next) => {
+    if (layer.match(req.path)) return next()
     middleware(req, res, next)
-  })
-
-  return router
+  }
 }

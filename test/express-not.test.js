@@ -14,13 +14,44 @@ test.before(async () => {
     (req, res) => res.send('skipped')
   )
 
+  app.use('/use-end',
+    not(['/skip'], router, { end: true }),
+    (req, res) => res.send('skipped')
+  )
+
+  app.all('/all/*',
+    not(['/all/skip'], router),
+    (req, res) => res.send('skipped')
+  )
+
+  app.all('/all-end/*',
+    not(['/all-end/skip'], router, { end: true }),
+    (req, res) => res.send('skipped')
+  )
+
   app.listen(3030)
 })
 
-test('use: stopped', async (t) => {
+test('use', async (t) => {
   t.is((await got('http://localhost:3030/use/other')).body, 'stopped')
+  t.is((await got('http://localhost:3030/use/skip')).body, 'skipped')
+  t.is((await got('http://localhost:3030/use/skip/more')).body, 'skipped')
 })
 
-test('use: skipped', async (t) => {
-  t.is((await got('http://localhost:3030/use/skip')).body, 'skipped')
+test('use with end', async (t) => {
+  t.is((await got('http://localhost:3030/use-end/other')).body, 'stopped')
+  t.is((await got('http://localhost:3030/use-end/skip')).body, 'skipped')
+  t.is((await got('http://localhost:3030/use-end/skip/more')).body, 'stopped')
+})
+
+test('all', async (t) => {
+  t.is((await got('http://localhost:3030/all/other')).body, 'stopped')
+  t.is((await got('http://localhost:3030/all/skip')).body, 'skipped')
+  t.is((await got('http://localhost:3030/all/skip/more')).body, 'skipped')
+})
+
+test('all with end', async (t) => {
+  t.is((await got('http://localhost:3030/all-end/other')).body, 'stopped')
+  t.is((await got('http://localhost:3030/all-end/skip')).body, 'skipped')
+  t.is((await got('http://localhost:3030/all-end/skip/more')).body, 'stopped')
 })
