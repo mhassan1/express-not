@@ -6,6 +6,9 @@
   "repository": "https://github.com/mhassan1/express-not",
   "author": "mhassan1",
   "license": "MIT",
+  "engines": {
+    "node": ">=10"
+  },
   "scripts": {
     "test": "ava"
   },
