@@ -4,6 +4,7 @@
 
 - Added support for middleware spread
 - Moved options before middleware spread
+- Renamed `end` to `matchToEnd`
 
 ## [1.1.0] - 2019-12-11
 

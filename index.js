@@ -14,7 +14,7 @@ module.exports = (path, ...middleware) => {
     strict: 'strict' in options ? options.strict : false,
     // set this so that the match acts like `.all` rather than `.use`
     // e.g. '/a' should match '/a' and not '/a/b'
-    end: 'end' in options ? options.end : false,
+    end: 'matchToEnd' in options ? options.matchToEnd : false,
   }
 
   const noOp = () => {}

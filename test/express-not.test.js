@@ -17,7 +17,7 @@ test.before(async () => {
   )
 
   app.use('/use-end',
-    not(['/skip'], { end: true }, router),
+    not(['/skip'], { matchToEnd: true }, router),
     (req, res) => res.send('skipped')
   )
 
@@ -27,7 +27,7 @@ test.before(async () => {
   )
 
   app.all('/all-end/*',
-    not(['/all-end/skip'], { end: true }, router),
+    not(['/all-end/skip'], { matchToEnd: true }, router),
     (req, res) => res.send('skipped')
   )
 
