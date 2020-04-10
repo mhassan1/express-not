@@ -12,8 +12,10 @@
   "scripts": {
     "test": "ava"
   },
+  "dependencies": {
+    "array-flatten": "^1.1.1"
+  },
   "peerDependencies": {
-    "array-flatten": "^1.1.1",
     "express": "^4.17.1"
   },
   "devDependencies": {
