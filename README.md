@@ -29,5 +29,7 @@ app.use('/mount',
   _default `false`_
 * `middleware`: An Express callback or router, an array of callbacks and/or routers, or a mix of these
 
+The `v1` documentation is [here](https://github.com/mhassan1/express-not/blob/dd8ffb05411d70e56dba906df7c5dcd9e914d09c/README.md).
+
 ## License
 MIT
