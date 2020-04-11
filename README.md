@@ -25,7 +25,7 @@ app.use('/mount',
   _default `false`_
   * `strict`: Enable strict routing when matching the route ([express.Router docs](https://expressjs.com/en/api.html#express.router)),
   _default `false`_
-  * `end`: Match the route completely (like `.all`) instead of just the prefix (like `.use`),
+  * `matchToEnd`: Match the route completely (like `.all`) instead of just the prefix (like `.use`),
   _default `false`_
 * `middleware`: An Express callback or router, an array of callbacks and/or routers, or a mix of these
 
