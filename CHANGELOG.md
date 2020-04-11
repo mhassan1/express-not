@@ -18,6 +18,12 @@
 - Moved options before middleware spread
 - Renamed `end` to `matchToEnd`
 
+### BREAKING CHANGES
+
+- Changes to parameters
+  - `options.end` has been renamed to `options.matchToEnd`
+  - any number of `middleware` can now be passed after the `options` object
+
 ## [1.1.0] - 2019-12-11
 [1.1.0]: https://github.com/mhassan1/express-not/compare/v1.0.0...v1.1.0
 
