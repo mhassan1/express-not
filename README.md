@@ -31,5 +31,11 @@ app.use('/mount',
 
 The `v1` documentation is [here](https://github.com/mhassan1/express-not/blob/dd8ffb05411d70e56dba906df7c5dcd9e914d09c/README.md).
 
+## Development
+```bash
+yarn
+yarn test
+```
+
 ## License
 MIT
