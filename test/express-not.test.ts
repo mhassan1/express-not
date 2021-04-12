@@ -1,44 +1,44 @@
 import test from 'ava'
-import express, { Router } from 'express'
+import express, { Router, Request, Response, NextFunction } from 'express'
 import got from 'got'
 import not from '..'
 
 test.before(async () => {
   const app = express()
 
-  const router = new Router()
-  const noOpMiddleware = (req, res, next) => next()
-  const middleware = (req, res) => res.send('stopped')
+  const router = Router()
+  const noOpMiddleware = (req: Request, res: Response, next: NextFunction) => next()
+  const middleware = (req: Request, res: Response) => res.send('stopped')
   router.use(middleware)
 
   app.use('/use',
     not(['/skip'], router),
-    (req, res) => res.send('skipped')
+    (req: Request, res: Response) => res.send('skipped')
   )
 
   app.use('/use-end',
     not(['/skip'], { matchToEnd: true }, router),
-    (req, res) => res.send('skipped')
+    (req: Request, res: Response) => res.send('skipped')
   )
 
   app.all('/all/*',
     not(['/all/skip'], router),
-    (req, res) => res.send('skipped')
+    (req: Request, res: Response) => res.send('skipped')
   )
 
   app.all('/all-end/*',
     not(['/all-end/skip'], { matchToEnd: true }, router),
-    (req, res) => res.send('skipped')
+    (req: Request, res: Response) => res.send('skipped')
   )
 
   app.use('/multiple',
     not(['/skip'], noOpMiddleware, [ noOpMiddleware, router ]),
-    (req, res) => res.send('skipped')
+    (req: Request, res: Response) => res.send('skipped')
   )
 
   app.use('/anonymous',
     not(['/skip'], middleware),
-    (req, res) => res.send('skipped')
+    (req: Request, res: Response) => res.send('skipped')
   )
 
   app.listen(3030)

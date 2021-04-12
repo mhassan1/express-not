@@ -34,6 +34,7 @@ The `v1` documentation is [here](https://github.com/mhassan1/express-not/blob/dd
 ## Development
 ```bash
 yarn
+yarn build
 yarn test
 ```
 
