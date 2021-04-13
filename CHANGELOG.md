@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.0] - 2021-04-12
+[2.1.0]: https://github.com/mhassan1/express-not/compare/v2.0.2...v2.1.0
+
+- Move to TypeScript
+- Move to Yarn Berry
+
 ## [2.0.2] - 2020-04-10
 [2.0.2]: https://github.com/mhassan1/express-not/compare/v2.0.1...v2.0.2
 
