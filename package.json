@@ -1,6 +1,6 @@
 {
   "name": "express-not",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Skip middleware when a path matches",
   "main": "index.js",
   "repository": "https://github.com/mhassan1/express-not",
