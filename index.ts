@@ -1,7 +1,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import Layer = require('express/lib/router/layer')
+import Layer = require('router/lib/layer')
 import { flatten } from 'array-flatten'
 
 import { Request, Response, NextFunction, RequestHandler as ExpressRequestHandler, RouterOptions } from 'express'
@@ -37,7 +37,7 @@ function expressNot (path: PathParams, ...optionsOrMiddleware: (ExpressNotOption
 
   return flatten(middleware).map((_middleware: ExpressRequestHandler) => (req: Request, res: Response, next: NextFunction) => {
     if (layer.match(req.path)) return next()
-    _middleware(req, res, next)
+    return _middleware(req, res, next)
   })
 }
 
