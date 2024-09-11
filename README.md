@@ -1,6 +1,8 @@
 # express-not
 Skip middleware when a path matches
 
+This package works with Express v5. For Express v4 support, use `express-not@2`.
+
 ## Install
 `npm install express-not`
 
