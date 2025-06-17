@@ -1,56 +1,62 @@
 import test from 'ava'
-import express, { Router, Request, Response, NextFunction } from 'express'
+import express, { Express, Router, RequestHandler, ErrorRequestHandler } from 'express'
 import got from 'got'
 import not from '..'
+
+let server: ReturnType<Express['listen']> | undefined
 
 test.before(async () => {
   const app = express()
 
   const router = Router()
-  const noOpMiddleware = (req: Request, res: Response, next: NextFunction) => next()
-  const middleware = (req: Request, res: Response) => res.send('stopped')
-  const asyncErrorMiddleware = async (_req: Request, _res: Response) => { throw new Error('oops') }
+  const noOpMiddleware: RequestHandler = (_req, _res, next) => { next() }
+  const middleware: RequestHandler = (_req, res) => { res.send('stopped') }
+  const asyncErrorMiddleware: RequestHandler = async (_req, _res) => { throw new Error('oops') }
   router.use(middleware)
 
   app.use('/use',
     not(['/skip'], router),
-    (req: Request, res: Response) => res.send('skipped')
+    ((_req, res) => { res.send('skipped') }) as RequestHandler
   )
 
   app.use('/use-end',
     not(['/skip'], { matchToEnd: true }, router),
-    (req: Request, res: Response) => res.send('skipped')
+    ((_req, res) => { res.send('skipped') }) as RequestHandler
   )
 
   app.all(
     '/all/*rest',
     not(['/all/skip'], router),
-    (req: Request, res: Response) => res.send('skipped')
+    ((_req, res) => { res.send('skipped') }) as RequestHandler
   )
 
   app.all(
     '/all-end/*rest',
     not(['/all-end/skip'], { matchToEnd: true }, router),
-    (req: Request, res: Response) => res.send('skipped')
+    ((_req, res) => { res.send('skipped') }) as RequestHandler
   )
 
   app.use('/multiple',
     not(['/skip'], noOpMiddleware, [ noOpMiddleware, router ]),
-    (req: Request, res: Response) => res.send('skipped')
+    ((_req, res) => { res.send('skipped') }) as RequestHandler
   )
 
   app.use('/anonymous',
     not(['/skip'], middleware),
-    (req: Request, res: Response) => res.send('skipped')
+    ((_req, res) => { res.send('skipped') }) as RequestHandler
   )
 
   app.use('/error',
     not(['/skip'], asyncErrorMiddleware),
-    (req: Request, res: Response) => res.send('skipped'),
-    (err: Error, req: Request, res: Response, _next: NextFunction) => res.send('errored')
+    ((_req, res) => { res.send('skipped') }) as RequestHandler,
+    ((_err, _req, res, _next) => { res.send('errored') }) as ErrorRequestHandler
   )
 
-  app.listen(3030)
+  server = app.listen(3030)
+})
+
+test.after(async () => {
+  server?.close()
 })
 
 test('use', async (t) => {
