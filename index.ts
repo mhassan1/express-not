@@ -1,6 +1,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 import Layer = require('router/lib/layer')
 import { flatten } from 'array-flatten'
 
@@ -30,7 +31,6 @@ function expressNot (path: PathParams, ...optionsOrMiddleware: (ExpressNotOption
     end: 'matchToEnd' in options ? options.matchToEnd : false,
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const noOp = () => {}
 
   const layer = new Layer(path, layerOpts, noOp)
