@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0] - 2023-09-11
+## [3.0.0] - 2024-09-11
 [3.0.0]: https://github.com/mhassan1/express-not/compare/v2.1.0...v3.0.0
 
 ### BREAKING CHANGES
