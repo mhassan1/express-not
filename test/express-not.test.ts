@@ -100,3 +100,23 @@ test('async error middleware', async (t) => {
   t.is((await got('http://localhost:3030/error/skip')).body, 'skipped')
   t.is((await got('http://localhost:3030/error/skip/more')).body, 'skipped')
 })
+
+test('preserves middleware names', (t) => {
+  const app = express()
+  const noOpMiddleware: RequestHandler = (_req, _res, next) => { next() }
+  const middleware: RequestHandler[] = [
+    function namedMiddleware(_req, _res, next) { next() },
+    noOpMiddleware,
+    (_req, _res, next) => { next() }
+  ]
+
+  app.use(not('/', middleware))
+
+  const stack = app.router.stack
+  t.is(stack.length, middleware.length)
+  middleware.forEach((original, index) => {
+    t.not(stack[index].handle, original)
+    t.is(stack[index].handle.name, original.name)
+    t.is(stack[index].name, original.name || '<anonymous>')
+  })
+})

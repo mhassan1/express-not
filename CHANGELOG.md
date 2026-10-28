@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.1.0] - 2026-10-28
+[3.1.0]: https://github.com/mhassan1/express-except/compare/v3.0.0...v3.1.0
+
+- Add names to middleware functions
+
 ## [3.0.0] - 2024-09-11
 [3.0.0]: https://github.com/mhassan1/express-not/compare/v2.1.0...v3.0.0
 

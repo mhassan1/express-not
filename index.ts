@@ -35,9 +35,13 @@ function expressNot (path: PathParams, ...optionsOrMiddleware: (ExpressNotOption
 
   const layer = new Layer(path, layerOpts, noOp)
 
-  return flatten(middleware).map((_middleware: ExpressRequestHandler) => (req: Request, res: Response, next: NextFunction) => {
-    if (layer.match(req.path)) return next()
-    return _middleware(req, res, next)
+  return flatten(middleware).map((_middleware: ExpressRequestHandler) => {
+    const wrappedMiddleware = (req: Request, res: Response, next: NextFunction) => {
+      if (layer.match(req.path)) return next()
+      return _middleware(req, res, next)
+    }
+    Object.defineProperty(wrappedMiddleware, 'name', { value: _middleware.name, configurable: true })
+    return wrappedMiddleware
   })
 }
 
